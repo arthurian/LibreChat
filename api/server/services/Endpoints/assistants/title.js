@@ -50,6 +50,17 @@ const addTitle = async (req, { text, responseText, conversationId }) => {
     return;
   }
 
+  if (client.options.titleConvo === false) {
+    return;
+  }
+
+  if (!client || typeof client.titleConvo !== 'function') {
+    logger.debug(
+      '[assistants/addTitle] client.titleConvo is not available - title generation skipped',
+    );
+    return;
+  }
+
   const titleCache = getLogStores(CacheKeys.GEN_TITLE);
   const key = `${req.user.id}-${conversationId}`;
 
